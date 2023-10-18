@@ -1,0 +1,3 @@
+gt4500,0,0,0,0
+torpedo,single
+torpedo,single
