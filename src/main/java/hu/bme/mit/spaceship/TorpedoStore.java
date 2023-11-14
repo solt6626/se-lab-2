@@ -20,7 +20,7 @@ public class TorpedoStore {
     this.torpedoCount = numberOfTorpedos;
 
     // update failure rate if it was specified in an environment variable
-    String failureEnv = System.getenv("IVT_RATE");
+    String failureEnv = EnvVariableProvider.getEnvVariable("INV_RATE");
     if (failureEnv != null){
       try {
         FAILURE_RATE = Double.parseDouble(failureEnv);

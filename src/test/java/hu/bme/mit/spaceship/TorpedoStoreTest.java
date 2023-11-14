@@ -1,6 +1,7 @@
 package hu.bme.mit.spaceship;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +45,43 @@ class TorpedoStoreTest {
     //Assert
     assertEquals(2, result);
     assertEquals(false, empty);
+  }
+
+  @Test
+  void fire_illegal_argument(){
+    TorpedoStore store = new TorpedoStore(1, 0);
+    
+    assertThrows(IllegalArgumentException.class, () -> {
+      store.fire(10);
+    });
+        assertThrows(IllegalArgumentException.class, () -> {
+      store.fire(-1);
+    });
+  }
+
+  @Test
+  void inv_rate_from_env_variable_1(){
+    EnvVariableProvider.test.put("INV_RATE", "1.0");
+
+    TorpedoStore store = new TorpedoStore(1);
+    assertEquals(store.fire(1), false);
+    EnvVariableProvider.test.clear();
+  }
+
+  @Test
+  void inv_rate_from_env_variable_2(){
+    EnvVariableProvider.test.put("INV_RATE", "0.0");
+
+    TorpedoStore store = new TorpedoStore(1);
+    assertEquals(store.fire(1), true);
+    EnvVariableProvider.test.clear();
+  }
+  @Test
+  void inv_rate_from_env_variable_3(){
+    EnvVariableProvider.test.put("INV_RATE", "invalid double");
+
+    TorpedoStore store = new TorpedoStore(1);
+    assertEquals(store.fire(1), true);
+    EnvVariableProvider.test.clear();
   }
 }
